@@ -52,6 +52,7 @@ void * CHEF_X (void * arg)
      cout<<"CHEF X is taking a tea break\n\n";
      pthread_mutex_unlock(&Console_lock);
 
+     //wait for the queue to be non-empty
      sem_wait(&CakequeueEmpty);
      pthread_mutex_lock(&lock);
      
@@ -81,6 +82,7 @@ void * CHEF_Y(void * arg)
      cout<<"CHEF Y is taking a tea break\n\n";
      pthread_mutex_unlock(&Console_lock);
 
+     //wait for the queue to be non-empty
      sem_wait(&CakequeueEmpty);
      pthread_mutex_lock(&lock);
      
@@ -118,6 +120,10 @@ void * CHEF_Z (void * arg)
       {
         
         //now wait for the chocolate cake queue (Queue 3) to be empty
+        pthread_mutex_lock(&Console_lock);
+        cout<<"CHEF Z is taking a coffee break\n\n";
+        pthread_mutex_unlock(&Console_lock); 
+
         sem_wait(&ChocolatequeueEmpty);
 
         chocolatequeue.push(chococake);
@@ -138,6 +144,10 @@ void * CHEF_Z (void * arg)
       else
       {
         //now wait for the vanilla cake queue (Queue 2) to be empty
+        pthread_mutex_lock(&Console_lock);
+        cout<<"CHEF Z is taking a coffee break\n\n";
+        pthread_mutex_unlock(&Console_lock);
+         
         sem_wait(&VanillaqueueEmpty);
 
         vanillaqueue.push(vanillacake);
